@@ -1,8 +1,6 @@
-// src/hooks/useWallet.ts
 import { mainnet, polygon, optimism, arbitrum, base } from 'wagmi/chains'
 export const supportedChains = [mainnet, polygon, optimism, arbitrum, base]
 
-// Updated imports for wagmi v2
 import { useAccount, useConnect, useDisconnect, useChainId, useSwitchChain } from 'wagmi'
 
 export const useWallet = () => {

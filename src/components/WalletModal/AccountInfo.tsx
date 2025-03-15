@@ -20,7 +20,7 @@ export const AccountInfo: React.FC<AccountInfoProps> = ({ address, onDisconnect 
 
   return (
     <div className="p-5 bg-gradient-to-br from-gray-900 to-gray-800 text-white rounded-2xl shadow-xl w-full max-w-md mx-auto">
-      {/* Header */}
+
       <div className="flex justify-between items-center mb-4">
         <h3 className="text-lg font-semibold">Wallet Connected</h3>
         <Button 

@@ -20,9 +20,9 @@ export const useWallet = () => {
     isConnected,
     connectionStatus: status,
     connectionError: error,
-    currentChain, // This is now the chain object we found above
+    currentChain, 
     availableChains: chains,
-    switchNetwork: switchChain, // Renamed but still exported as switchNetwork for compatibility
+    switchNetwork: switchChain, 
     isSwitchingNetwork
   }
 }

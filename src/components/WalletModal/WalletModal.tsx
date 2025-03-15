@@ -1,10 +1,9 @@
-// src/components/WalletModal/WalletModal.tsx
 import React from 'react'
 import { Modal } from '../UI'
 import { WalletList } from './WalletList'
 import { NetworkSelector } from './NetworkSelector'
 import { AccountInfo } from './AccountInfo'
-import { useWallet } from '../../hooks/usewallet' // Make sure the file name casing matches
+import { useWallet } from '../../hooks/usewallet'
 
 interface WalletModalProps {
   isOpen: boolean
@@ -26,20 +25,26 @@ export const WalletModal: React.FC<WalletModalProps> = ({ isOpen, onClose }) => 
     isSwitchingNetwork
   } = useWallet()
 
-  // Handle wallet connection
+  // Convert readonly arrays to mutable
+  const mutableChains = [...availableChains]
+  const mutableWallets = [...availableWallets]
+
   const handleConnect = (connector: any) => {
     connect({ connector })
   }
 
-  // Handle wallet disconnection
   const handleDisconnect = () => {
     disconnect()
   }
 
-  // Handle network switching
-  const handleSwitchNetwork = (chainId: number) => {
-    if (switchNetwork) {
-      switchNetwork(chainId)
+  const handleSwitchNetwork = async (chainId: number) => {
+    try {
+      if (typeof switchNetwork === "function") {
+        await switchNetwork({ chainId }) // Ensure switchNetwork is async
+        console.log("Switched to:", chainId)
+      }
+    } catch (error: unknown) {
+      console.error("Network switch failed:", error)
     }
   }
 
@@ -48,11 +53,18 @@ export const WalletModal: React.FC<WalletModalProps> = ({ isOpen, onClose }) => 
       {isConnected && address ? (
         <div className="space-y-6">
           <AccountInfo address={address} onDisconnect={handleDisconnect} />
-          
+
+          {/* Display current chain ID */}
+          <div className="bg-gray-800 p-3 rounded-lg text-center text-gray-300">
+            <span className="font-mono text-sm">
+              Current Chain ID: {currentChain?.id || "Unknown"}
+            </span>
+          </div>
+
           {/* Only show network selector if chain switching is available */}
-          {switchNetwork && availableChains.length > 0 && (
+          {typeof switchNetwork === "function" && mutableChains.length > 0 && (
             <NetworkSelector
-              chains={availableChains}
+              chains={mutableChains}
               currentChain={currentChain}
               onSwitchNetwork={handleSwitchNetwork}
               isLoading={isSwitchingNetwork}
@@ -61,7 +73,7 @@ export const WalletModal: React.FC<WalletModalProps> = ({ isOpen, onClose }) => 
         </div>
       ) : (
         <WalletList
-          wallets={availableWallets}
+          wallets={mutableWallets}
           onConnect={handleConnect}
           connectionStatus={connectionStatus}
         />

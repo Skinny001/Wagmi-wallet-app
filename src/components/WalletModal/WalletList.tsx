@@ -1,4 +1,3 @@
-// src/components/WalletModal/WalletList.tsx
 import React from 'react'
 import { Connector } from 'wagmi'
 import { Button } from '../UI'
@@ -9,9 +8,7 @@ interface WalletListProps {
   connectionStatus: string
 }
 
-/**
- * Display available wallets and handle connection
- */
+
 export const WalletList: React.FC<WalletListProps> = ({ wallets, onConnect, connectionStatus }) => {
   // If no wallets are found
   if (wallets.length === 0) {

@@ -3,19 +3,18 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { WagmiConfig, createConfig, http } from 'wagmi';
+import { WagmiConfig, createConfig, http, createStorage } from 'wagmi';
 import { mainnet } from 'wagmi/chains';
 
-// Create a QueryClient instance
 const queryClient = new QueryClient();
 
 // Configure wagmi with viem's `http` transport
 const wagmiConfig = createConfig({
-  chains: [mainnet], 
+  chains: [mainnet],
   transports: {
-    [mainnet.id]: http(), // Use viem's HTTP transport
+    [mainnet.id]: http(),
   },
-  autoConnect: true,
+  storage: createStorage({ storage: window.localStorage }) // ✅ Enables auto-connect
 });
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
